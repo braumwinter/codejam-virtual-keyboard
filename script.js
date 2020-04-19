@@ -64,6 +64,7 @@ const buttonList = [
   ['Ctrl_Right', 'ControlRight'],
 ];
 
+/* comm */
 let isCtrl = false;
 let isAlt = false;
 let isCapsLock = false;
