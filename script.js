@@ -245,8 +245,8 @@ class KeyboardButton {
     if (carriage === strLength) {
       textArea.value += mass[letterCount];
     } else {
-      textArea.value = textArea.value.slice(0, carriage)
-                + mass[letterCount] + textArea.value.slice(carriage);
+      textArea.value = textArea.value.slice(0, carriage) +
+        mass[letterCount] + textArea.value.slice(carriage);
     }
 
     textArea.focus();
@@ -262,8 +262,8 @@ class KeyboardButton {
       if (carriage === strLength) {
         textArea.value = textArea.value.slice(0, -1);
       } else {
-        textArea.value = textArea.value.slice(0, carriage - 1)
-                    + textArea.value.slice(carriage);
+        textArea.value = textArea.value.slice(0, carriage - 1) +
+          textArea.value.slice(carriage);
       }
     }
 
@@ -305,12 +305,12 @@ class KeyboardButton {
 
   uarr() {
     /**
-         * ширина символа данного шрифта и размера = 9px
-         * вычисленно экспериментально: через ширину span с одним символом
-         * и display: inline-block
-         * вычисляем сколько символов поместится в одной строке
-         * берём поле ввода, вычитаем padding'и и делим на ширину символа
-         */
+     * ширина символа данного шрифта и размера = 9px
+     * вычисленно экспериментально: через ширину span с одним символом
+     * и display: inline-block
+     * вычисляем сколько символов поместится в одной строке
+     * берём поле ввода, вычитаем padding'и и делим на ширину символа
+     */
     const textAreaWidtn = (textArea.scrollWidth - 20) / 9;
     const str = textArea.value;
     carriage = textArea.selectionEnd;
@@ -392,12 +392,12 @@ class KeyboardButton {
 
   darr() {
     /**
-         * ширина символа данного шрифта и размера = 9px
-         * вычисленно экспериментально: через ширину span с одним символом
-         * и display: inline-block
-         * вычисляем сколько символов поместится в одной строке
-         * берём поле ввода, вычитаем padding'и и делим на ширину символа
-         */
+     * ширина символа данного шрифта и размера = 9px
+     * вычисленно экспериментально: через ширину span с одним символом
+     * и display: inline-block
+     * вычисляем сколько символов поместится в одной строке
+     * берём поле ввода, вычитаем padding'и и делим на ширину символа
+     */
     const textAreaWidtn = (textArea.scrollWidth - 20) / 9;
     const str = textArea.value;
     carriage = textArea.selectionEnd;
@@ -627,6 +627,25 @@ document.addEventListener('keydown', (event) => {
 
     if (buttonAction == keyCode) {
       allButton[buttonIndex].classList.add('button_active');
+      const dataActionButton = allButton[buttonIndex].getAttribute('data-action');
+
+      if (dataActionButton == 'Print') {
+        event.preventDefault();
+        const strLength = textArea.value.length;
+        carriage = textArea.selectionEnd;
+
+        if (carriage === strLength) {
+          textArea.value += allButton[buttonIndex].innerHTML;
+        } else {
+          textArea.value = textArea.value.slice(0, carriage) +
+          allButton[buttonIndex].innerHTML + textArea.value.slice(carriage);
+        }
+
+        textArea.focus();
+        carriage += 1;
+        textArea.selectionEnd = carriage;
+      }
+
 
       switch (buttonAction) {
         case 'Tab': {
@@ -636,10 +655,12 @@ document.addEventListener('keydown', (event) => {
         }
         case 'CapsLock': {
           lightCapsLock();
+          pressShift();
           break;
         }
         case 'ShiftLeft':
         case 'ShiftRight': {
+          event.preventDefault();
           pressShift();
           break;
         }
